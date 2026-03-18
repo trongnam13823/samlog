@@ -6,26 +6,8 @@ import GameCreateCopyEdit from './pages/games/GameCreateCopyEdit';
 import GameDetail from './pages/games/GameDetail';
 import ErrorBoundary from './components/ErrorBoundary';
 import RootLayout from './components/layouts/RootLayout';
-import { useEffect } from 'react';
 
 export default function App() {
-  useEffect(() => {
-    const handleClick = (e) => {
-      const btn = e.target.closest('button');
-      if (!btn) return;
-
-      if (navigator.vibrate) {
-        navigator.vibrate(5);
-      }
-    };
-
-    document.addEventListener('click', handleClick);
-
-    return () => {
-      document.removeEventListener('click', handleClick);
-    };
-  }, []);
-
   return (
     <BrowserRouter>
       <ErrorBoundary>
