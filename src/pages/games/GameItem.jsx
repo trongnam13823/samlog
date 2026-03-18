@@ -11,12 +11,8 @@ import { Link } from 'react-router';
 import { Separator } from '../../components/ui/separator';
 import { cn } from '@/lib/utils';
 import { getMoneyColor, getRankColor } from '@/utils/getColor';
+import { motion } from 'framer-motion';
 
-/**
- * GameItem - Component hiển thị thông tin một ván chơi
- * Hỗ trợ swipe để hiện actions: Copy, Edit, Delete
- * Hiển thị danh sách người chơi, điểm số, tiền thắng/thua
- */
 export default function GameItem({
   tableId,
   index,
@@ -27,38 +23,47 @@ export default function GameItem({
   createdAt,
   onDelete,
 }) {
-  // Hook xử lý swipe actions (2 nút trái, 1 nút phải)
   const { rowRef, width, swipeHandlers } = useSwipeAction({
     right: 1,
     left: 2,
   });
 
   return (
-    <div>
+    <motion.div
+      variants={{
+        hidden: { opacity: 0, y: 30 },
+        show: {
+          opacity: 1,
+          y: 0,
+          transition: {
+            type: 'spring',
+            stiffness: 120,
+            damping: 14,
+          },
+        },
+      }}
+    >
       <div className='relative rounded-lg'>
-        {/* === Layer actions (ẩn phía sau, hiện khi swipe) === */}
+        {/* === ACTIONS === */}
         <div className='absolute inset-0 flex'>
-          {/* Nút Copy (trái) */}
           <Link
             to={`/tables/${tableId}/games/${index}/action/copy`}
-            className='flex h-full items-center justify-center rounded-lg bg-blue-500/90'
+            className='flex items-center justify-center rounded-lg bg-blue-500/90'
             style={{ width: `${width}%` }}
           >
             <CopyIcon className='size-5 text-white' />
           </Link>
 
-          {/* Nút Edit (trái) */}
           <Link
             to={`/tables/${tableId}/games/${index}/action/update`}
-            className='flex h-full items-center justify-center rounded-lg bg-amber-400/90'
+            className='flex items-center justify-center rounded-lg bg-amber-400/90'
             style={{ width: `${width}%` }}
           >
             <SquarePenIcon className='size-5 text-white' />
           </Link>
 
-          {/* Nút Delete (phải) */}
           <button
-            className='ml-auto flex h-full items-center justify-center rounded-lg bg-red-500/90'
+            className='ml-auto flex items-center justify-center rounded-lg bg-red-500/90'
             style={{ width: `${width}%` }}
             onClick={() => onDelete(index, name)}
           >
@@ -66,77 +71,82 @@ export default function GameItem({
           </button>
         </div>
 
-        {/* === Item chính (có thể swipe) === */}
-        <Item
-          variant='outline'
-          className={cn(
-            'bg-background relative rounded-lg border shadow transition-transform',
-            showSwipeHint && 'swipe-hint-anim',
-          )}
-          asChild
-          ref={rowRef}
-          {...swipeHandlers}
-        >
-          <Link to={`/tables/${tableId}/games/${index}`}>
-            <div className='w-full space-y-3 p-3'>
-              {/* Tiêu đề ván chơi */}
-              <ItemTitle className='flex items-center gap-2 text-sm font-semibold'>
-                <div className='bg-muted rounded-md p-1.5'>
-                  <DicesIcon className='size-4' />
-                </div>
-                <span className='truncate'>{name}</span>
-              </ItemTitle>
+        {/* === CONTENT === */}
+        <motion.div>
+          <Item
+            variant='outline'
+            className={cn(
+              'bg-background relative rounded-lg border shadow transition-transform',
+              showSwipeHint && 'swipe-hint-anim',
+            )}
+            asChild
+            ref={rowRef}
+            {...swipeHandlers}
+          >
+            <Link to={`/tables/${tableId}/games/${index}`}>
+              <div className='w-full space-y-3 p-3'>
+                {/* TITLE */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                >
+                  <ItemTitle className='flex items-center gap-2 text-sm font-semibold'>
+                    <div className='bg-muted rounded-md p-1.5'>
+                      <DicesIcon className='size-4' />
+                    </div>
+                    <span className='truncate'>{name}</span>
+                  </ItemTitle>
+                </motion.div>
 
-              {/* Danh sách người chơi */}
-              <div className='space-y-1 text-sm'>
-                {ranks.map((rank, i) => (
-                  <div
-                    key={i}
-                    className={cn(
-                      'grid grid-cols-[30px_1fr_30px_2fr] items-center rounded-md px-2 py-1.5',
-                      getRankColor(i),
-                    )}
-                  >
-                    {/* Thứ hạng */}
-                    <span className='text-[11px] opacity-60'>#{i + 1}</span>
-
-                    {/* Tên người chơi */}
-                    <span className='truncate font-medium'>{rank.name}</span>
-
-                    {/* Điểm số */}
-                    <span className='text-right text-xs tabular-nums opacity-70'>
-                      {rank.score}
-                    </span>
-
-                    {/* Tiền thắng/thua (màu xanh/đỏ) */}
-                    <span
+                {/* RANKS */}
+                <div className='space-y-1 text-sm'>
+                  {ranks.map((rank, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.03 }}
                       className={cn(
-                        'text-right font-semibold tabular-nums',
-                        getMoneyColor(rank.money),
+                        'grid grid-cols-[30px_1fr_30px_2fr] items-center rounded-md px-2 py-1.5',
+                        getRankColor(i),
                       )}
                     >
-                      {rank.money}
-                    </span>
-                  </div>
-                ))}
+                      <span className='text-[11px] opacity-60'>#{i + 1}</span>
+
+                      <span className='truncate font-medium'>{rank.name}</span>
+
+                      <span className='text-right text-xs tabular-nums opacity-70'>
+                        {rank.score}
+                      </span>
+
+                      <span
+                        className={cn(
+                          'text-right font-semibold tabular-nums',
+                          getMoneyColor(rank.money),
+                        )}
+                      >
+                        {rank.money}
+                      </span>
+                    </motion.div>
+                  ))}
+                </div>
+
+                <Separator className='opacity-60' />
+
+                {/* FOOTER */}
+                <ItemDescription className='text-muted-foreground flex items-center justify-between text-xs'>
+                  <span className='flex items-center gap-1'>
+                    <ListTreeIcon className='size-4' />
+                    {totalRounds} vòng
+                  </span>
+
+                  <span>{createdAt}</span>
+                </ItemDescription>
               </div>
-
-              {/* Đường phân cách */}
-              <Separator className='opacity-60' />
-
-              {/* Footer: Số vòng và thời gian */}
-              <ItemDescription className='text-muted-foreground flex items-center justify-between text-xs'>
-                <span className='flex items-center gap-1'>
-                  <ListTreeIcon className='size-4' />
-                  {totalRounds} vòng
-                </span>
-
-                <span>{createdAt}</span>
-              </ItemDescription>
-            </div>
-          </Link>
-        </Item>
+            </Link>
+          </Item>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 }

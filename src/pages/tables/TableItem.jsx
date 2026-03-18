@@ -10,12 +10,8 @@ import {
 import useSwipeAction from '@/hooks/useSwipeAction';
 import { Link } from 'react-router';
 import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 
-/**
- * TableItem - Component hiển thị thông tin một bàn chơi
- * Hỗ trợ swipe để hiện nút Delete
- * Hiển thị danh sách người chơi, số ván, số vòng
- */
 export default function TableItem({
   index,
   createdAt,
@@ -25,78 +21,98 @@ export default function TableItem({
   totalRounds,
   onDelete,
 }) {
-  // Hook xử lý swipe (1 nút bên phải - Delete)
   const { rowRef, width, swipeHandlers } = useSwipeAction({
     right: 1,
   });
 
   return (
-    <div className='space-y-1'>
-      {/* Thời gian tạo bàn */}
+    <motion.div
+      variants={{
+        hidden: { opacity: 0, y: 30 },
+        show: {
+          opacity: 1,
+          y: 0,
+          transition: {
+            type: 'spring',
+            stiffness: 120,
+            damping: 14,
+          },
+        },
+      }}
+      className='space-y-1'
+    >
+      {/* Time */}
       <p className='text-muted-foreground px-1 text-xs'>{createdAt}</p>
 
       <div className='relative rounded-lg'>
-        {/* === Layer actions (ẩn phía sau, hiện khi swipe phải) === */}
+        {/* === ACTION LAYER === */}
         <div className='absolute inset-0 flex'>
-          {/* Nút Delete */}
-          <button
+          <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: width > 0 ? 1 : 0 }}
             className='ml-auto flex items-center justify-center rounded-lg bg-red-500/90 backdrop-blur-sm'
             style={{ width: `${width}%` }}
             onClick={() => onDelete(index, name)}
           >
             <Trash2Icon className='size-5 text-white' />
-          </button>
+          </motion.button>
         </div>
 
-        {/* === Content: Thông tin bàn chơi === */}
-        <Item
-          variant='outline'
-          className={cn(
-            'bg-background relative rounded-lg border shadow transition-transform',
-            showSwipeHint && 'swipe-hint-anim',
-          )}
-          asChild
-          ref={rowRef}
-          {...swipeHandlers}
-        >
-          <Link to={`/tables/${index}/games`}>
-            <div className='flex gap-3 p-3'>
-              {/* Icon đại diện */}
-              <ItemMedia
-                variant='icon'
-                className='bg-muted my-auto rounded-lg p-2'
-              >
-                <UsersIcon className='text-foreground size-5' />
-              </ItemMedia>
+        {/* === CONTENT === */}
+        <motion.div>
+          <Item
+            variant='outline'
+            className={cn(
+              'bg-background relative rounded-lg border shadow transition-transform',
+              showSwipeHint && 'swipe-hint-anim',
+            )}
+            asChild
+            ref={rowRef}
+            {...swipeHandlers}
+          >
+            <Link to={`/tables/${index}/games`}>
+              <div className='flex gap-3 p-3'>
+                {/* Icon */}
+                <motion.div
+                  initial={{ scale: 0.8, rotate: -20 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  transition={{ delay: 0.1 }}
+                >
+                  <ItemMedia
+                    variant='icon'
+                    className='bg-muted my-auto rounded-lg p-2'
+                  >
+                    <UsersIcon className='text-foreground size-5' />
+                  </ItemMedia>
+                </motion.div>
 
-              {/* Thông tin chi tiết */}
-              <ItemContent className='min-w-0 flex-1'>
-                {/* Tên người chơi */}
-                <ItemTitle className='truncate text-sm font-semibold'>
-                  {name}
-                </ItemTitle>
+                {/* Content */}
+                <ItemContent className='min-w-0 flex-1'>
+                  <ItemTitle className='truncate text-sm font-semibold'>
+                    {name}
+                  </ItemTitle>
 
-                {/* Meta: Số ván và vòng */}
-                <ItemDescription className='mt-1 flex items-center gap-2 text-xs'>
-                  <span className='flex items-center gap-1'>
-                    <DicesIcon className='size-4' />
-                    {totalGames} ván
-                  </span>
+                  <ItemDescription className='mt-1 flex items-center gap-2 text-xs'>
+                    <span className='flex items-center gap-1'>
+                      <DicesIcon className='size-4' />
+                      {totalGames} ván
+                    </span>
 
-                  <Separator orientation='vertical' asChild>
-                    <span className='h-3' />
-                  </Separator>
+                    <Separator orientation='vertical' asChild>
+                      <span className='h-3' />
+                    </Separator>
 
-                  <span className='flex items-center gap-1'>
-                    <ListTreeIcon className='size-4' />
-                    {totalRounds} vòng
-                  </span>
-                </ItemDescription>
-              </ItemContent>
-            </div>
-          </Link>
-        </Item>
+                    <span className='flex items-center gap-1'>
+                      <ListTreeIcon className='size-4' />
+                      {totalRounds} vòng
+                    </span>
+                  </ItemDescription>
+                </ItemContent>
+              </div>
+            </Link>
+          </Item>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 }

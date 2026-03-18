@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import ScoreTable from './ScoreTable';
 import ScoreKeyboard from './ScoreKeyboard';
+import { motion } from 'framer-motion';
 
 export default function GameDetail() {
   const { tableId, gameId } = useParams();
@@ -132,24 +133,53 @@ export default function GameDetail() {
       </div>
 
       {/* Score bar */}
-      <ul className='flex gap-1.5'>
+      <motion.ul
+        layout
+        initial='hidden'
+        animate='show'
+        variants={{
+          hidden: { opacity: 0, y: 10 },
+          show: {
+            opacity: 1,
+            y: 0,
+            transition: {
+              duration: 0.25,
+              staggerChildren: 0.06,
+            },
+          },
+        }}
+        className='flex gap-1.5'
+      >
         {rankedPlayers.map(
           ({ name: playerName, index: playerIndex }, rankPos) => (
-            <li
+            <motion.li
+              layout
               key={playerIndex}
+              variants={{
+                hidden: { opacity: 0, y: 10 },
+                show: { opacity: 1, y: 0 },
+              }}
+              transition={{ type: 'spring', stiffness: 120, damping: 14 }}
               className={cn(
                 'flex flex-1 flex-col rounded-lg px-2 py-1.5 text-center text-sm shadow',
                 getRankColor(rankPos),
               )}
             >
               <span className='truncate'>{playerName}</span>
-              <span className='font-semibold tabular-nums'>
+
+              <motion.span
+                key={totals[playerIndex]}
+                initial={{ scale: 1.15 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.2 }}
+                className='font-semibold tabular-nums'
+              >
                 {totals[playerIndex]}
-              </span>
-            </li>
+              </motion.span>
+            </motion.li>
           ),
         )}
-      </ul>
+      </motion.ul>
 
       {/* Bảng điểm */}
       <ScoreTable
@@ -160,25 +190,27 @@ export default function GameDetail() {
         onCellClick={openCell}
       />
 
-      {/* Bàn phím / Footer */}
-      {isKeyboardOpen ? (
-        <ScoreKeyboard
-          users={users}
-          activeCell={activeCell}
-          displayValue={displayValue}
-          isPositive={isPositive}
-          onSetPositive={() => setIsPositive(true)}
-          onSetNegative={() => setIsPositive(false)}
-          onKeyPress={handleKeyPress}
-          onBackspace={handleBackspace}
-          onPrev={handlePrev}
-          onNext={handleNext}
-          onDone={handleDone}
-          onClose={handleClose}
-        />
-      ) : (
-        <FooterAction title='Thua thì nhập đi' onClick={handleAddRow} />
-      )}
+      <ScoreKeyboard
+        users={users}
+        activeCell={activeCell}
+        displayValue={displayValue}
+        isPositive={isPositive}
+        onSetPositive={() => setIsPositive(true)}
+        onSetNegative={() => setIsPositive(false)}
+        onKeyPress={handleKeyPress}
+        onBackspace={handleBackspace}
+        onPrev={handlePrev}
+        onNext={handleNext}
+        onDone={handleDone}
+        onClose={handleClose}
+        hidden={!isKeyboardOpen}
+      />
+
+      <FooterAction
+        title='Thua thì nhập đi'
+        onClick={handleAddRow}
+        hidden={isKeyboardOpen}
+      />
     </div>
   );
 }

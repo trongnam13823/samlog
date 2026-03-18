@@ -11,16 +11,8 @@ import {
   setSwipeHintCount,
 } from '@/lib/database';
 import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 
-/**
- * GameList - Trang danh sách các ván chơi
- * Hiển thị tổng điểm tất cả người chơi và danh sách ván
- *
- * Chức năng:
- * - Hiển thị tổng tiền của người chơi
- * - Danh sách các ván chơi
- * - Nút thêm ván mới
- */
 export default function GameList() {
   const navigate = useNavigate();
   const { tableId } = useParams();
@@ -48,19 +40,25 @@ export default function GameList() {
 
   return (
     <>
-      {/* === Summary bar: Tổng tiền các người chơi === */}
-      <div className='bg-background/80 sticky top-0 z-10 flex rounded-lg border px-2 py-1 shadow backdrop-blur-md'>
-        {data.totalMoney.map((item) => (
-          <div
+      {/* === Summary === */}
+      <motion.div
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ type: 'spring', stiffness: 120, damping: 14 }}
+        className='bg-background/80 sticky top-0 z-10 flex rounded-lg border px-2 py-1 shadow backdrop-blur-md'
+      >
+        {data.totalMoney.map((item, i) => (
+          <motion.div
             key={item.name}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.05 }}
             className='flex flex-1 flex-col items-center py-1.5'
           >
-            {/* Tên người chơi */}
             <span className='text-primary truncate text-xs font-medium'>
               {item.name}
             </span>
 
-            {/* Tổng tiền (màu theo thắng/thua) */}
             <span
               className={cn(
                 'text-sm font-semibold tabular-nums',
@@ -69,33 +67,50 @@ export default function GameList() {
             >
               {item.money}
             </span>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
-      {/* === List: Danh sách các ván chơi === */}
-      <ItemGroup className='gap-5'>
-        {data.games.length > 0 ? (
-          data.games
-            .map((game, index) => (
-              <GameItem
-                key={game.createdAt}
-                tableId={tableId}
-                showSwipeHint={showSwipeHint && index === data.games.length - 1}
-                index={index}
-                {...game}
-                onDelete={handleDelete}
-              />
-            ))
-            .reverse()
-        ) : (
-          <div className='text-muted-foreground fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center'>
-            Không có ván nào
-          </div>
-        )}
-      </ItemGroup>
+      {/* === List === */}
+      <motion.div
+        initial='hidden'
+        animate='show'
+        variants={{
+          hidden: {},
+          show: {
+            transition: { staggerChildren: 0.06 },
+          },
+        }}
+      >
+        <ItemGroup className='gap-5'>
+          {data.games.length > 0 ? (
+            data.games
+              .map((game, index) => (
+                <GameItem
+                  key={game.createdAt}
+                  tableId={tableId}
+                  showSwipeHint={
+                    showSwipeHint && index === data.games.length - 1
+                  }
+                  index={index}
+                  {...game}
+                  onDelete={handleDelete}
+                />
+              ))
+              .reverse()
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className='text-muted-foreground fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center'
+            >
+              Không có ván nào
+            </motion.div>
+          )}
+        </ItemGroup>
+      </motion.div>
 
-      {/* === Footer: Nút thêm ván mới === */}
+      {/* === Footer === */}
       <FooterAction
         title='Thêm bát thêm đũa'
         onClick={() => navigate(`/tables/${tableId}/games/-1/action/create`)}

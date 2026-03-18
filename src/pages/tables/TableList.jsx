@@ -9,11 +9,8 @@ import {
   setSwipeHintCount,
 } from '@/lib/database';
 import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 
-/**
- * TableList - Trang danh sách các bàn chơi
- * Hiển thị danh sách bàn và nút tạo bàn mới
- */
 export default function TableList() {
   const navigate = useNavigate();
   const [data, setData] = useState(getTableList());
@@ -40,28 +37,45 @@ export default function TableList() {
 
   return (
     <>
-      {/* === List: Danh sách các bàn chơi === */}
-      <ItemGroup className='gap-5'>
-        {data.length > 0 ? (
-          data
-            .map((item, index) => (
-              <TableItem
-                key={item.createdAt}
-                index={index}
-                showSwipeHint={showSwipeHint && index === data.length - 1}
-                {...item}
-                onDelete={onDelete}
-              />
-            ))
-            .reverse()
-        ) : (
-          <div className='text-muted-foreground fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center'>
-            Không có bàn nào
-          </div>
-        )}
-      </ItemGroup>
+      {/* === List === */}
+      <motion.div
+        initial='hidden'
+        animate='show'
+        variants={{
+          hidden: {},
+          show: {
+            transition: {
+              staggerChildren: 0.06,
+            },
+          },
+        }}
+      >
+        <ItemGroup className='gap-5'>
+          {data.length > 0 ? (
+            data
+              .map((item, index) => (
+                <TableItem
+                  key={item.createdAt}
+                  index={index}
+                  showSwipeHint={showSwipeHint && index === data.length - 1}
+                  {...item}
+                  onDelete={onDelete}
+                />
+              ))
+              .reverse()
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className='text-muted-foreground fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center'
+            >
+              Không có bàn nào
+            </motion.div>
+          )}
+        </ItemGroup>
+      </motion.div>
 
-      {/* === Footer: Nút tạo bàn mới === */}
+      {/* === Footer === */}
       <FooterAction
         title='Thêm bàn thêm ghế'
         onClick={() => navigate('/create')}

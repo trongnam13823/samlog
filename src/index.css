@@ -7,8 +7,8 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --header-height: 48px;
-  --footer-height: 64px;
+  --header-height: 60px;
+  --footer-height: 80px;
 
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -147,22 +147,30 @@
   }
 
   .swipe-hint-anim {
-    animation: swipeHint 1.6s ease-in-out 1;
+    animation: swipeHint 1s ease-in-out 1;
   }
 
   @keyframes swipeHint {
     0% {
       transform: translateX(0);
     }
+
+    /* kéo sang trái */
     25% {
-      transform: translateX(-32px);
-    } /* vuốt trái */
+      transform: translateX(-20px);
+    }
+
+    /* về giữa */
     50% {
       transform: translateX(0);
     }
+
+    /* kéo sang phải */
     75% {
-      transform: translateX(32px);
-    } /* vuốt phải */
+      transform: translateX(20px);
+    }
+
+    /* về lại */
     100% {
       transform: translateX(0);
     }

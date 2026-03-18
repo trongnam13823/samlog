@@ -18,13 +18,8 @@ import {
   getTableUsers,
   updateGameInfo,
 } from '@/lib/database';
+import { motion } from 'framer-motion';
 
-/**
- * GameCreateCopyEdit - Trang tạo/sao chép/chỉnh sửa bát đũa
- * @param {string} action - 'copy' | 'edit' - xác định chế độ
- * @param {string} tableId - ID của bàn chơi
- * @param {string} gameId - ID của ván chơi (khi edit/copy)
- */
 export default function GameCreateCopyEdit() {
   const navigate = useNavigate();
   const { tableId, gameId, action } = useParams();
@@ -81,52 +76,54 @@ export default function GameCreateCopyEdit() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      {/* === FieldSet: Form container === */}
-      <FieldSet>
-        {/* Tiêu đề form */}
-        <FieldLegend className='text-center text-lg font-semibold'>
-          {getTitle()}
-        </FieldLegend>
+    <>
+      <motion.form
+        onSubmit={handleSubmit}
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.35,
+          ease: [0.22, 1, 0.36, 1],
+        }}
+      >
+        <FieldSet>
+          <FieldLegend className='text-center text-lg font-semibold'>
+            {getTitle()}
+          </FieldLegend>
 
-        <FieldDescription className='text-center text-sm'>
-          Người không chơi là người thắng
-        </FieldDescription>
+          <FieldDescription className='text-center text-sm'>
+            Người không chơi là người thắng
+          </FieldDescription>
 
-        {/* ===== Input: Tên ván chơi ===== */}
-        <FieldGroup className='mt-5'>
-          <Field>
-            <FieldLabel htmlFor='name'>Kèo gì đây các dân chơi?</FieldLabel>
+          <FieldGroup className='mt-5'>
+            <Field>
+              <FieldLabel htmlFor='name'>Kèo gì đây các dân chơi?</FieldLabel>
 
-            <Input
-              className='h-11 text-base'
-              type='text'
-              id='name'
-              autoComplete='off'
-              placeholder='Chơi xong rồi tính...'
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </Field>
-        </FieldGroup>
+              <Input
+                className='h-11 text-base'
+                type='text'
+                id='name'
+                autoComplete='off'
+                placeholder='Chơi xong rồi tính...'
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </Field>
+          </FieldGroup>
 
-        {/* ===== Inputs: Ghi chú từng thứ hạng ===== */}
-        <FieldGroup className='mt-5 gap-5'>
-          {rewards.map((content, i) => {
-            return (
+          <FieldGroup className='mt-5 gap-5'>
+            {rewards.map((content, i) => (
               <Field key={i} className='flex flex-row items-center gap-5'>
-                {/* Badge thứ hạng có màu */}
                 <FieldLabel
                   htmlFor={i}
                   className={cn(
-                    `flex h-11 min-w-[48px] flex-1 items-center justify-center rounded-lg text-base font-semibold`,
+                    'flex h-11 min-w-[48px] flex-1 items-center justify-center rounded-lg text-base font-semibold',
                     getRankColor(i),
                   )}
                 >
                   #{i + 1}
                 </FieldLabel>
 
-                {/* Input nhập điểm */}
                 <Input
                   className='h-11 flex-2 text-base'
                   type='text'
@@ -137,13 +134,11 @@ export default function GameCreateCopyEdit() {
                   onChange={(e) => handleNoteChange(i, e.target.value)}
                 />
               </Field>
-            );
-          })}
-        </FieldGroup>
-      </FieldSet>
-
-      {/* === Footer: Nút submit === */}
+            ))}
+          </FieldGroup>
+        </FieldSet>
+      </motion.form>
       <FooterAction title='Ok luôn' onClick={handleSubmit} />
-    </form>
+    </>
   );
 }

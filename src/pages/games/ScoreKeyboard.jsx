@@ -7,22 +7,8 @@ import {
   ChevronRightIcon,
   DeleteIcon,
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-/**
- * ScoreKeyboard - Bàn phím nhập điểm
- * @param {string[]} users - Danh sách tên người chơi
- * @param {{ rowIndex: number, colIndex: number }} activeCell - Ô đang active
- * @param {string} displayValue - Giá trị hiển thị
- * @param {boolean} isPositive - Dấu dương/âm
- * @param {() => void} onSetPositive - Bật dấu +
- * @param {() => void} onSetNegative - Bật dấu -
- * @param {(key: number) => void} onKeyPress - Nhấn số
- * @param {() => void} onBackspace - Xóa ký tự
- * @param {() => void} onPrev - Sang người trước
- * @param {() => void} onNext - Sang người tiếp
- * @param {() => void} onDone - Hoàn thành
- * @param {() => void} onClose - Đóng bàn phím
- */
 export default function ScoreKeyboard({
   users,
   activeCell,
@@ -36,11 +22,12 @@ export default function ScoreKeyboard({
   onNext,
   onDone,
   onClose,
+  hidden = false,
 }) {
   const isLast = activeCell?.colIndex === users.length - 1;
 
   return (
-    <div className='mb-10 flex w-full flex-col gap-3'>
+    <div hidden={hidden} className='mb-10 flex w-full flex-col gap-3'>
       {/* Top bar: dấu +/-, tên người chơi, giá trị, nút đóng */}
       <div className='flex items-center gap-3'>
         <Button
@@ -111,9 +98,9 @@ export default function ScoreKeyboard({
           <span className='flex-1 truncate'>
             {
               users[
-                activeCell.colIndex === 0
+                activeCell?.colIndex === 0
                   ? users.length - 1
-                  : activeCell.colIndex - 1
+                  : activeCell?.colIndex - 1
               ]
             }
           </span>
@@ -134,7 +121,7 @@ export default function ScoreKeyboard({
             onClick={onNext}
           >
             <span className='flex-1 truncate'>
-              {users[activeCell.colIndex + 1]}
+              {users[activeCell?.colIndex + 1]}
             </span>
             <ChevronRightIcon className='size-5' />
           </Button>

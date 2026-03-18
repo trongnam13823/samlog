@@ -2,15 +2,8 @@ import { cn } from '@/lib/utils';
 import { getScoreColor } from '@/utils/getColor';
 import { useRef } from 'react';
 import { useScrollIntoView } from '@/hooks/useScrollIntoView';
+import { motion } from 'framer-motion';
 
-/**
- * ScoreTable - Bảng điểm
- * @param {string[]} users - Danh sách tên người chơi
- * @param {number[][]} scores - Ma trận điểm
- * @param {{ rowIndex: number, colIndex: number } | null} activeCell - Ô đang active
- * @param {string} displayValue - Giá trị hiển thị tại ô active
- * @param {(rowIndex: number, colIndex: number) => void} onCellClick - Callback khi click ô
- */
 export default function ScoreTable({
   users,
   scores,
@@ -28,7 +21,12 @@ export default function ScoreTable({
   const setRef = useScrollIntoView(activeCellKey);
 
   return (
-    <div className='relative w-full flex-1'>
+    <motion.div
+      className='relative w-full flex-1'
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.2, ease: 'easeOut' }}
+    >
       <div className='absolute inset-0'>
         <div
           ref={tableWrapRef}
@@ -69,11 +67,21 @@ export default function ScoreTable({
                 </tr>
               ) : (
                 scores.map((row, rowIndex) => (
-                  <tr key={rowIndex} className='not-first:border-t'>
+                  <motion.tr
+                    key={rowIndex}
+                    className='not-first:border-t'
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      delay: rowIndex * 0.03,
+                      duration: 0.15,
+                    }}
+                  >
                     {row.map((val, colIndex) => {
                       const isActive =
                         activeCell?.rowIndex === rowIndex &&
                         activeCell?.colIndex === colIndex;
+
                       return (
                         <td
                           key={colIndex}
@@ -90,13 +98,13 @@ export default function ScoreTable({
                         </td>
                       );
                     })}
-                  </tr>
+                  </motion.tr>
                 ))
               )}
             </tbody>
           </table>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
