@@ -55,7 +55,7 @@ export default function TableList() {
             ))
             .reverse()
         ) : (
-          <div className='text-muted-foreground m-auto py-10 text-center'>
+          <div className='text-muted-foreground fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center'>
             Không có bàn nào
           </div>
         )}

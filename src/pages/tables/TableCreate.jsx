@@ -82,16 +82,13 @@ export default function TableCreate() {
       </FieldSet>
 
       {/* === Preview: Badge tên người chơi === */}
-      <div className='mt-4 flex min-h-[40px] flex-wrap gap-2'>
+      <div className='flex min-h-[40px] flex-wrap gap-2'>
         {players.map((name, index) => (
           <Badge key={index} className='px-3 py-1 text-sm' variant='secondary'>
             {name}
           </Badge>
         ))}
       </div>
-
-      {/* Spacer đẩy footer xuống */}
-      <div className='flex-1' />
 
       {/* === Footer: Nút submit === */}
       <FooterAction

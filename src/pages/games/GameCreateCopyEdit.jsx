@@ -111,10 +111,10 @@ export default function GameCreateCopyEdit() {
         </FieldGroup>
 
         {/* ===== Inputs: Ghi chú từng thứ hạng ===== */}
-        <FieldGroup className='mt-5 gap-3'>
+        <FieldGroup className='mt-5 gap-5'>
           {rewards.map((content, i) => {
             return (
-              <Field key={i} className='flex flex-row items-center gap-3'>
+              <Field key={i} className='flex flex-row items-center gap-5'>
                 {/* Badge thứ hạng có màu */}
                 <FieldLabel
                   htmlFor={i}

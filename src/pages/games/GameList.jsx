@@ -49,7 +49,7 @@ export default function GameList() {
   return (
     <>
       {/* === Summary bar: Tổng tiền các người chơi === */}
-      <div className='bg-background/80 flex rounded-lg border px-2 py-1 shadow backdrop-blur-md'>
+      <div className='bg-background/80 sticky top-0 z-10 flex rounded-lg border px-2 py-1 shadow backdrop-blur-md'>
         {data.totalMoney.map((item) => (
           <div
             key={item.name}
@@ -89,7 +89,7 @@ export default function GameList() {
             ))
             .reverse()
         ) : (
-          <div className='text-muted-foreground m-auto py-10 text-center text-sm'>
+          <div className='text-muted-foreground fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center'>
             Không có ván nào
           </div>
         )}
