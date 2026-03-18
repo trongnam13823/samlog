@@ -59,6 +59,8 @@ export default function TableCreate() {
             <FieldLabel htmlFor='players'>Tên các dân chơi</FieldLabel>
 
             <Input
+              autoFocus={true}
+              autoCapitalize='words'
               className='h-11 text-base'
               type='text'
               id='players'
