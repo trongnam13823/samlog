@@ -138,7 +138,7 @@ export default function GameDetail() {
             <li
               key={playerIndex}
               className={cn(
-                'flex flex-1 flex-col rounded-lg px-2 py-1.5 text-center text-sm',
+                'flex flex-1 flex-col rounded-lg px-2 py-1.5 text-center text-sm shadow-sm',
                 getRankColor(rankPos),
               )}
             >

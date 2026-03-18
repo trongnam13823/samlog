@@ -14,7 +14,7 @@ export default function FooterAction({ title, onClick, disabled = false }) {
       {/* Nút chính full width */}
       <Button
         disabled={disabled}
-        className='h-12 w-full font-bold'
+        className='h-12 w-full font-bold shadow-sm'
         onClick={onClick}
       >
         <PlusIcon className='size-6' /> {title}

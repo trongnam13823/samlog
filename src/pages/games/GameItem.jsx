@@ -36,7 +36,7 @@ export default function GameItem({
 
   return (
     <div>
-      <div className='relative overflow-hidden rounded-xl'>
+      <div className='relative rounded-lg'>
         {/* === Layer actions (ẩn phía sau, hiện khi swipe) === */}
         <div className='absolute inset-0 flex'>
           {/* Nút Copy (trái) */}
@@ -71,7 +71,7 @@ export default function GameItem({
         <Item
           variant='outline'
           className={cn(
-            'bg-background relative rounded-xl border shadow-sm transition-transform',
+            'bg-background relative rounded-lg border shadow-sm transition-transform',
             showSwipeHint && 'swipe-hint-anim',
           )}
           asChild

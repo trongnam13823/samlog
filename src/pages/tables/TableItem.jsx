@@ -35,7 +35,7 @@ export default function TableItem({
       {/* Thời gian tạo bàn */}
       <p className='text-muted-foreground px-1 text-xs'>{createdAt}</p>
 
-      <div className='relative overflow-hidden rounded-xl'>
+      <div className='relative rounded-lg'>
         {/* === Layer actions (ẩn phía sau, hiện khi swipe phải) === */}
         <div className='absolute inset-0 flex'>
           {/* Nút Delete */}
@@ -52,7 +52,7 @@ export default function TableItem({
         <Item
           variant='outline'
           className={cn(
-            'bg-background relative rounded-xl border shadow-sm transition-transform',
+            'bg-background relative rounded-lg border shadow-sm transition-transform',
             showSwipeHint && 'swipe-hint-anim',
           )}
           asChild
