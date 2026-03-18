@@ -1,4 +1,4 @@
-import { PlusIcon, ArrowLeftIcon, ArrowRightIcon } from 'lucide-react';
+import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-react';
 import { Button } from './ui/button';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router';
@@ -47,14 +47,6 @@ export default function FooterAction({
             onClick={onClick}
             className='flex h-12 w-full items-center justify-center font-bold shadow'
           >
-            <motion.span
-              initial={{ scale: 0.8, rotate: -90 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
-            >
-              <PlusIcon className='size-6' />
-            </motion.span>
-
             <motion.span
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
