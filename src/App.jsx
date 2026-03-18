@@ -15,7 +15,7 @@ export default function App() {
       if (!btn) return;
 
       if (navigator.vibrate) {
-        navigator.vibrate(10);
+        navigator.vibrate(5);
       }
     };
 
