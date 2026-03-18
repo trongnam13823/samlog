@@ -19,7 +19,7 @@ export default function FooterAction({
   return (
     <motion.footer
       hidden={hidden}
-      initial={{ y: 60, opacity: 0 }}
+      initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{
         type: 'spring',
