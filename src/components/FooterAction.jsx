@@ -1,7 +1,7 @@
 import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-react';
 import { Button } from './ui/button';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 
 export default function FooterAction({
   title,
@@ -15,6 +15,7 @@ export default function FooterAction({
   nextPath = null,
 }) {
   const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <motion.footer
@@ -33,7 +34,11 @@ export default function FooterAction({
         {showBack && (
           <motion.button
             whileTap={{ scale: 0.9 }}
-            onClick={() => navigate(-1)}
+            onClick={() => {
+              if (location.pathname !== '/') {
+                navigate(-1); // chỉ back nếu không ở trang chủ
+              }
+            }}
             className='bg-background/60 flex h-11 w-11 items-center justify-center rounded-xl'
           >
             <ArrowLeftIcon className='size-5' />
