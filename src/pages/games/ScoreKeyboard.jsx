@@ -67,7 +67,7 @@ export default function ScoreKeyboard({
           −
         </Button>
 
-        <span className='truncate text-base font-semibold'>
+        <span className='truncate text-lg font-bold uppercase'>
           {users[activeCell?.colIndex]}
         </span>
 
