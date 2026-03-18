@@ -52,7 +52,7 @@ export default function TableItem({
         <Item
           variant='outline'
           className={cn(
-            'bg-background relative rounded-lg border shadow-sm transition-transform',
+            'bg-background relative rounded-lg border shadow transition-transform',
             showSwipeHint && 'swipe-hint-anim',
           )}
           asChild

@@ -6,7 +6,7 @@ export default function RootLayout() {
     <div className='flex h-svh flex-col'>
       <Header />
 
-      <main className='mt-[calc(10px+var(--header-height))] mb-[calc(10px+var(--footer-height))] flex h-svh flex-1 flex-col overflow-x-hidden overflow-y-auto px-5'>
+      <main className='mt-(--header-height) mb-(--footer-height) flex h-svh flex-1 flex-col gap-5 overflow-x-hidden overflow-y-auto p-5'>
         <Outlet />
       </main>
     </div>

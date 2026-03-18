@@ -7,11 +7,10 @@ import {
 } from 'lucide-react';
 import { Item, ItemDescription, ItemTitle } from '@/components/ui/item';
 import useSwipeAction from '@/hooks/useSwipeAction';
-import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import { Separator } from '../../components/ui/separator';
 import { cn } from '@/lib/utils';
 import { getMoneyColor, getRankColor } from '@/utils/getColor';
-import { deleteGame } from '@/lib/database';
 
 /**
  * GameItem - Component hiển thị thông tin một ván chơi
@@ -71,7 +70,7 @@ export default function GameItem({
         <Item
           variant='outline'
           className={cn(
-            'bg-background relative rounded-lg border shadow-sm transition-transform',
+            'bg-background relative rounded-lg border shadow transition-transform',
             showSwipeHint && 'swipe-hint-anim',
           )}
           asChild

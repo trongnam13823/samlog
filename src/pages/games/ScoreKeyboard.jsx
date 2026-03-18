@@ -46,7 +46,7 @@ export default function ScoreKeyboard({
         <Button
           className={cn(
             'size-12 text-2xl',
-            isPositive && 'bg-primary text-primary-foreground shadow-sm',
+            isPositive && 'bg-primary text-primary-foreground shadow',
           )}
           variant='secondary'
           size='icon'
@@ -58,8 +58,7 @@ export default function ScoreKeyboard({
         <Button
           className={cn(
             'size-12 text-2xl',
-            !isPositive &&
-              'bg-destructive text-destructive-foreground shadow-sm',
+            !isPositive && 'bg-destructive text-destructive-foreground shadow',
           )}
           variant='secondary'
           size='icon'
@@ -77,7 +76,7 @@ export default function ScoreKeyboard({
         </span>
 
         <Button
-          className='size-12 shadow-sm'
+          className='size-12 shadow'
           variant='secondary'
           size='icon'
           onClick={onClose}
@@ -92,7 +91,7 @@ export default function ScoreKeyboard({
           <Button
             key={num}
             onClick={() => onKeyPress(num)}
-            className='aspect-square h-14 w-full text-2xl shadow-sm'
+            className='aspect-square h-14 w-full text-2xl shadow'
             variant='secondary'
             size='icon'
           >
@@ -105,7 +104,7 @@ export default function ScoreKeyboard({
       <div className='flex items-center gap-3'>
         <Button
           variant='outline'
-          className='h-12 flex-1 text-sm shadow-sm'
+          className='h-12 flex-1 text-sm shadow'
           onClick={onPrev}
         >
           <ChevronLeftIcon className='size-5' />
@@ -123,7 +122,7 @@ export default function ScoreKeyboard({
         {isLast ? (
           <Button
             onClick={onDone}
-            className='h-12 flex-1 border border-green-500 bg-green-500/20 text-sm text-green-700 shadow-sm'
+            className='h-12 flex-1 border border-green-500 bg-green-500/20 text-sm text-green-700 shadow'
           >
             <span className='flex-1'>Xong</span>
             <CheckIcon className='size-5' />
@@ -131,7 +130,7 @@ export default function ScoreKeyboard({
         ) : (
           <Button
             variant='outline'
-            className='h-12 flex-1 text-sm shadow-sm'
+            className='h-12 flex-1 text-sm shadow'
             onClick={onNext}
           >
             <span className='flex-1 truncate'>
@@ -144,7 +143,7 @@ export default function ScoreKeyboard({
         <Button
           variant='destructive'
           size='icon'
-          className='size-12 shadow-sm'
+          className='size-12 shadow'
           onClick={onBackspace}
         >
           <DeleteIcon className='size-5' />

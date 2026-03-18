@@ -32,7 +32,7 @@ export default function ScoreTable({
       <div className='absolute inset-0'>
         <div
           ref={tableWrapRef}
-          className='bg-background max-h-full overflow-auto rounded-lg border shadow-sm'
+          className='bg-background max-h-full overflow-auto rounded-lg border'
         >
           <table className='w-full table-fixed text-[15px]'>
             <thead>

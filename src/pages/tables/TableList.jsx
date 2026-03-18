@@ -41,7 +41,7 @@ export default function TableList() {
   return (
     <>
       {/* === List: Danh sách các bàn chơi === */}
-      <ItemGroup className='min-h-full gap-5'>
+      <ItemGroup className='gap-5'>
         {data.length > 0 ? (
           data
             .map((item, index) => (

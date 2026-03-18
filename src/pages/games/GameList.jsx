@@ -49,7 +49,7 @@ export default function GameList() {
   return (
     <>
       {/* === Summary bar: Tổng tiền các người chơi === */}
-      <div className='bg-background/80 sticky top-0 z-10 flex rounded-lg border px-2 py-1 shadow-sm backdrop-blur-md'>
+      <div className='bg-background/80 flex rounded-lg border px-2 py-1 shadow backdrop-blur-md'>
         {data.totalMoney.map((item) => (
           <div
             key={item.name}
@@ -74,7 +74,7 @@ export default function GameList() {
       </div>
 
       {/* === List: Danh sách các ván chơi === */}
-      <ItemGroup className='mt-5 min-h-full gap-5 pb-20'>
+      <ItemGroup className='gap-5'>
         {data.games.length > 0 ? (
           data.games
             .map((game, index) => (
