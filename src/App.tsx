@@ -284,7 +284,7 @@ function TableDetailPage() {
     .map(([name, total]) => ({ name, total }))
     .sort((a, b) => b.total - a.total)
   return <>
-    <section className="shrink-0">
+    {totalRewards.some(({ total }) => total !== 0) && <section className="shrink-0">
       <div className="flex gap-1.5">
         {totalRewards.map(({ name, total }, index) => {
           const display = rewardDisplay(String(total))
@@ -294,7 +294,7 @@ function TableDetailPage() {
           </div>
         })}
       </div>
-    </section>
+    </section>}
     <main className="content">
       {table.games.length === 0 && <div className="empty"><div className="icon-box"><Dices className="size-5" /></div><p className="empty-title">Chưa có ván nào</p><p className="empty-text">Bấm "Tạo ván mới" bên dưới để bắt đầu ghi điểm.</p></div>}
       {[...table.games].reverse().map((game) => <LongPressCard key={game.id} onLongPress={() => openGameSheet(table, game)}>
