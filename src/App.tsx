@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import {
-  BarChart2, Check, ChevronLeft, ChevronRight, Copy, Delete, Dices,
+  BarChart2, Check, ChevronLeft, ChevronRight, Clock3, Copy, Delete, Dices,
   Pencil, Plus, Trash2, Users, X,
 } from 'lucide-react'
 import {
@@ -98,6 +98,7 @@ function rewardPlaceholder(index: number, count: number): string {
 function AppShell() {
   const tables = useSamlogStore((state) => state.tables)
   const deleteTable = useSamlogStore((state) => state.deleteTable)
+  const deleteAllGames = useSamlogStore((state) => state.deleteAllGames)
   const deleteGame = useSamlogStore((state) => state.deleteGame)
   const copyGame = useSamlogStore((state) => state.copyGame)
   const navigate = useNavigate()
@@ -148,6 +149,13 @@ function AppShell() {
     onConfirm: () => { deleteGame(owner.id, item.id); toast('Đã xóa ván') },
   })
 
+  const askDeleteAllGames = (item: Table) => setConfirmation({
+    title: 'Xóa tất cả ván?',
+    message: `Toàn bộ ${item.games.length} ván và bảng điểm trong bàn này sẽ bị xóa vĩnh viễn. Bàn chơi và danh sách người chơi vẫn được giữ lại.`,
+    confirmText: 'Xóa tất cả ván',
+    onConfirm: () => { deleteAllGames(item.id); toast('Đã xóa tất cả ván') },
+  })
+
   const context: ShellContext = {
     openTableSheet: (item) => setSheet({ kind: 'table', tableId: item.id, title: item.players.map(titleCase).join(' · ') }),
     openGameSheet: (owner, item) => setSheet({ kind: 'game', tableId: owner.id, gameId: item.id, title: item.title }),
@@ -178,6 +186,7 @@ function AppShell() {
       {sheet && (
         <BottomSheet title={sheet.title} onClose={() => setSheet(null)}>
             {sheet.kind === 'table' && <button className="sheet-item" onClick={() => { setSheet(null); navigate(`/tables/${sheet.tableId}`) }}><Users className="size-5 shrink-0" /><span className="sheet-text"><span className="font-semibold">Mở bàn này</span></span></button>}
+            {sheet.kind === 'table' && tables.find((item) => item.id === sheet.tableId)?.games.length! > 0 && <button className="sheet-item sheet-danger" onClick={() => { const current = tables.find((item) => item.id === sheet.tableId); setSheet(null); if (current) askDeleteAllGames(current) }}><Trash2 className="size-5 shrink-0" /><span className="sheet-text"><span className="font-semibold">Xóa tất cả ván</span></span></button>}
             {sheet.kind === 'game' && <>
               <button className="sheet-item" onClick={() => {
                 const copiedId = sheet.gameId ? copyGame(sheet.tableId, sheet.gameId) : null
@@ -232,7 +241,7 @@ function HomePage() {
       {tables.length === 0 && <div className="empty"><div className="icon-box"><Users className="size-5" /></div><p className="empty-title">Chưa có bàn chơi nào</p><p className="empty-text">Mỗi bàn là một nhóm bạn chơi cùng nhau. Bấm "Tạo bàn mới" bên dưới để bắt đầu.</p></div>}
       {[...tables].reverse().map((table) => <LongPressCard key={table.id} onLongPress={() => openTableSheet(table)}>
         <Link className="flex min-w-0 flex-1 items-center gap-3.5 p-4 text-left" to={`/tables/${table.id}`}>
-          <div className="icon-box"><Users className="size-5" /></div><div className="flex min-w-0 flex-col gap-1.5"><p className="t-main truncate text-sm font-semibold">{table.players.map(titleCase).join(' · ')}</p><div className="t-sub flex items-center gap-3 text-xs"><span className="flex items-center gap-1"><Dices className="size-3.5" />{table.games.length} ván</span><span className="flex items-center gap-1"><BarChart2 className="size-3.5" />{table.games.reduce((sum, game) => sum + getBoardLength(game), 0)} vòng</span></div></div>
+          <div className="icon-box"><Users className="size-5" /></div><div className="flex min-w-0 flex-col gap-1.5"><p className="t-main truncate text-sm font-semibold">{table.players.map(titleCase).join(' · ')}</p><div className="t-sub flex flex-wrap items-center gap-x-3 gap-y-1 text-xs"><span className="flex items-center gap-1"><Dices className="size-3.5" />{table.games.length} ván</span><span className="flex items-center gap-1"><BarChart2 className="size-3.5" />{table.games.reduce((sum, game) => sum + getBoardLength(game), 0)} vòng</span><span className="flex items-center gap-1"><Clock3 className="size-3.5" />{formatDate(table.createdAt)}</span></div></div>
         </Link>
       </LongPressCard>)}
     </main><footer className="footer"><button className="btn-primary w-full" onClick={() => { setPlayerText(''); setShowCreateSheet(true) }}><Plus className="size-5" />Tạo bàn mới</button></footer>

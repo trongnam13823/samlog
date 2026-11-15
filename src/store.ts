@@ -29,6 +29,7 @@ interface SamlogState {
   tables: Table[]
   addTable: (players: string[]) => string
   deleteTable: (tableId: string) => void
+  deleteAllGames: (tableId: string) => void
   addGame: (tableId: string, title: string, rewards: string[]) => string | null
   copyGame: (tableId: string, gameId: string) => string | null
   deleteGame: (tableId: string, gameId: string) => void
@@ -124,6 +125,9 @@ export const useSamlogStore = create<SamlogState>()(
         return id
       },
       deleteTable: (tableId) => set((state) => ({ tables: state.tables.filter((table) => table.id !== tableId) })),
+      deleteAllGames: (tableId) => set((state) => ({
+        tables: state.tables.map((table) => table.id === tableId ? { ...table, games: [] } : table),
+      })),
       addGame: (tableId, title, rewards) => {
         const table = get().tables.find((item) => item.id === tableId)
         if (!table) return null
