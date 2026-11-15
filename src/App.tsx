@@ -17,7 +17,6 @@ type ShellContext = {
   openGameSheet: (table: Table, game: Game) => void
   askDeleteTable: (table: Table) => void
   askDeleteGame: (table: Table, game: Game) => void
-  toast: (message: string) => void
 }
 
 const cx = (...values: Array<string | false | undefined>) => values.filter(Boolean).join(' ')
@@ -106,8 +105,6 @@ function AppShell() {
   const params = useParams()
   const [sheet, setSheet] = useState<SheetState | null>(null)
   const [confirmation, setConfirmation] = useState<ConfirmState | null>(null)
-  const [toastMessage, setToastMessage] = useState('')
-  const toastTimer = useRef<number | undefined>(undefined)
 
   const table = tables.find((item) => item.id === params.tableId)
   const game = table?.games.find((item) => item.id === params.gameId)
@@ -127,33 +124,25 @@ function AppShell() {
     return { title: 'SamLog', subtitle: 'Ghi điểm' }
   }, [newTable, tableDetail, table, newGame, editGame, gameBoard, game])
 
-  useEffect(() => () => window.clearTimeout(toastTimer.current), [])
-
-  const toast = (message: string) => {
-    setToastMessage(message)
-    window.clearTimeout(toastTimer.current)
-    toastTimer.current = window.setTimeout(() => setToastMessage(''), 2200)
-  }
-
   const askDeleteTable = (item: Table) => setConfirmation({
     title: 'Xóa bàn chơi này?',
     message: `Bàn ${item.players.map(titleCase).join(', ')} và ${item.games.length} ván sẽ bị xóa vĩnh viễn, không thể khôi phục.`,
     confirmText: 'Xóa bàn',
-    onConfirm: () => { deleteTable(item.id); toast('Đã xóa bàn') },
+    onConfirm: () => deleteTable(item.id),
   })
 
   const askDeleteGame = (owner: Table, item: Game) => setConfirmation({
     title: 'Xóa ván này?',
     message: `Ván "${item.title}" cùng toàn bộ bảng điểm sẽ bị xóa vĩnh viễn, không thể khôi phục.`,
     confirmText: 'Xóa ván',
-    onConfirm: () => { deleteGame(owner.id, item.id); toast('Đã xóa ván') },
+    onConfirm: () => deleteGame(owner.id, item.id),
   })
 
   const askDeleteAllGames = (item: Table) => setConfirmation({
     title: 'Xóa tất cả ván?',
     message: `Toàn bộ ${item.games.length} ván và bảng điểm trong bàn này sẽ bị xóa vĩnh viễn. Bàn chơi và danh sách người chơi vẫn được giữ lại.`,
     confirmText: 'Xóa tất cả ván',
-    onConfirm: () => { deleteAllGames(item.id); toast('Đã xóa tất cả ván') },
+    onConfirm: () => deleteAllGames(item.id),
   })
 
   const context: ShellContext = {
@@ -161,7 +150,6 @@ function AppShell() {
     openGameSheet: (owner, item) => setSheet({ kind: 'game', tableId: owner.id, gameId: item.id, title: item.title }),
     askDeleteTable,
     askDeleteGame,
-    toast,
   }
 
   function goBack() {
@@ -191,7 +179,7 @@ function AppShell() {
               <button className="sheet-item" onClick={() => {
                 const copiedId = sheet.gameId ? copyGame(sheet.tableId, sheet.gameId) : null
                 setSheet(null)
-                if (copiedId) { navigate(`/tables/${sheet.tableId}/games/${copiedId}`); toast('Đã tạo ván mới, bảng điểm trống') }
+                if (copiedId) navigate(`/tables/${sheet.tableId}/games/${copiedId}`)
               }}><Copy className="size-5 shrink-0" /><span className="sheet-text"><span className="font-semibold">Tạo ván mới từ ván này</span><span className="sheet-desc">Giữ nguyên thưởng/phạt, bảng điểm để trống</span></span></button>
               <button className="sheet-item" onClick={() => { const id = sheet.gameId; const tableId = sheet.tableId; setSheet(null); if (id) navigate(`/tables/${tableId}/games/${id}/edit`) }}><Pencil className="size-5 shrink-0" /><span className="sheet-text"><span className="font-semibold">Sửa tên và thưởng/phạt</span></span></button>
             </>}
@@ -212,7 +200,6 @@ function AppShell() {
           <div className="grid grid-cols-2 gap-2.5 pt-1"><button className="btn-secondary" onClick={() => setConfirmation(null)}>Hủy</button><button className="btn-danger" onClick={() => { const action = confirmation.onConfirm; setConfirmation(null); action() }}>{confirmation.confirmText}</button></div>
         </div>
       </div>}
-      {toastMessage && <div className="toast" role="status">{toastMessage}</div>}
     </div>
   )
 }
