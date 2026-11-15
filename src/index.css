@@ -4,7 +4,7 @@
 
 :root {
   color-scheme: dark;
-  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-family: "Be Vietnam Pro", ui-sans-serif, system-ui, sans-serif;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   font-synthesis: none;
@@ -53,12 +53,13 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .t-primary { color: var(--c-primary); font-weight: bold; }
 .t-error { color: var(--c-danger-text); }
 .text-foreground { color: var(--c-text); }
+.root .tabular-nums { font-family:"Roboto Mono",ui-monospace,SFMono-Regular,Menlo,monospace; font-variant-numeric:tabular-nums; }
 .field-label { color: var(--c-text-secondary); font-size: .875rem; font-weight: 600; }
 .field-help { margin-top: .125rem; color: var(--c-label-secondary); font-size: .75rem; line-height: 1.5; }
 .section-title { color: var(--c-label-secondary); font-size: .75rem; font-weight: 600; }
 .app-header { display:flex; min-height:2.75rem; flex-shrink:0; align-items:center; gap:.5rem; }
 .home-header { justify-content:flex-start; text-align:left; }
-.home-header .app-title { width:max-content; max-width:100%; background:linear-gradient(100deg,#f3f4ff 8%,#a5adff 92%); background-clip:text; color:transparent; -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-family:ui-rounded,"Arial Rounded MT Bold",system-ui,sans-serif; font-size:1.5rem; font-weight:800; letter-spacing:-.04em; }
+.home-header .app-title { width:max-content; max-width:100%; background:linear-gradient(100deg,#f3f4ff 8%,#a5adff 92%); background-clip:text; color:transparent; -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-family:"Be Vietnam Pro",ui-sans-serif,system-ui,sans-serif; font-size:1.5rem; font-weight:800; letter-spacing:-.04em; }
 .home-header .app-subtitle { color:var(--c-label-secondary); font-size:.8125rem; font-style:italic; font-weight:500; letter-spacing:.025em; }
 .app-title { overflow:hidden; color:var(--c-text); font-size:1.125rem; font-weight:700; text-overflow:ellipsis; white-space:nowrap; }
 .app-subtitle { overflow:hidden; color:var(--c-label-secondary); font-size:.75rem; text-overflow:ellipsis; white-space:nowrap; }
@@ -72,7 +73,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .game-icon { display:flex; width:1.75rem; height:1.75rem; flex-shrink:0; align-items:center; justify-content:center; border-radius:.5rem; background:rgba(129,140,248,.1); color:var(--c-primary); }
 .icon-btn { display:flex; width:2.75rem; height:2.75rem; flex-shrink:0; align-items:center; justify-content:center; border:0; border-radius:.75rem; background:transparent; color:var(--c-label-secondary); }
 .more-btn { display:flex; width:3rem; height:3.5rem; flex-shrink:0; align-items:center; justify-content:center; border:0; background:transparent; color:var(--c-label-secondary); }
-.long-press-card { user-select:none; -webkit-user-select:none; }
+.long-press-card { border-color:rgba(129,140,248,.18); background-color:#181b26; user-select:none; -webkit-user-select:none; }
 .root button:active:not(:disabled), .root a:active { transform:scale(.975); }
 .long-press-card:active { transform:scale(.992); }
 .key-btn:active:not(:disabled) { transform:scale(.94); }
@@ -98,7 +99,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .raised-keyboard { margin-bottom:clamp(4rem,14vh,7rem); }
 .key-btn { display:flex; height:3.25rem; align-items:center; justify-content:center; border:1px solid var(--c-border); border-radius:.75rem; background:rgba(255,255,255,.055); }
 .key-btn:disabled { opacity:.3; }
-.key-digit { height:auto; aspect-ratio:1 / 1; color:var(--c-text); font-size:1.25rem; font-weight:700; }
+.key-digit { height:auto; aspect-ratio:1 / 1; color:var(--c-text); font-family:"Roboto Mono",ui-monospace,SFMono-Regular,Menlo,monospace; font-size:1.25rem; font-weight:700; }
 .key-nav { gap:.375rem; padding:0 .75rem; color:var(--c-primary); }
 .key-finish { gap:.375rem; border-color:rgba(34,197,94,.28); background:rgba(34,197,94,.12); padding:0 .75rem; color:rgb(74,222,128); }
 .key-delete { border-color:rgba(239,68,68,.18); background:rgba(239,68,68,.08); color:var(--c-danger-text); }
